@@ -47,19 +47,7 @@ class S3Client:
 
     def sticker_exists(self, sticker_name):
         try:
-            r = self.client.select_object_content(
-                Bucket=self.bucket,
-                Key=sticker_name,
-                ExpressionType='SQL',
-                Expression="select count(*) from s3object s where '" + sticker_name + "' in s.stickers[*].name",
-                InputSerialization={
-                    'JSON': {
-                        "Type": "LINES",
-                    },
-                    'CompressionType': 'NONE',
-                },
-                OutputSerialization={'JSON': {}},
-            )
-            return True if r['Payload'] else False
+            r = self.client.head_object(Bucket=self.bucket, Key=sticker_name+"/pack.zip")
+            return True if r["ResponseMetadata"]['HTTPStatusCode'] == 200 else False
         except ClientError as e:
             logging.error(e)
