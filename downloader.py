@@ -1,5 +1,5 @@
 import os
-from os.path import basename
+from os.path import basename, splitext
 
 
 class Downloader:

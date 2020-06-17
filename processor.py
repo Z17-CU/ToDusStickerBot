@@ -1,5 +1,5 @@
 import glob
-import json
+import shutil,os
 
 from downloader import Downloader
 from storage import Storage
@@ -34,4 +34,8 @@ class Processor:
         storage.zip_dir(sticker_dict['name'], sticker_dict['name']+'.zip')
 
         self.s3_client.upload_file(sticker_dict['name']+'.zip', sticker_dict['name']+"/pack.zip")
+        shutil.rmtree(sticker_dict['name'], True)
+        os.remove(sticker_dict['name']+'.zip')
+        # TODO: guardar la info que esta en sticker_dict para usarla en el api
+
         update.message.reply_text("Añadido " + update.message.sticker.set_name)
