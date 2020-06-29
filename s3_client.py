@@ -8,8 +8,7 @@ class S3Client:
         self.client = boto3.client('s3',
                                    endpoint_url=endpoint,
                                    aws_access_key_id=access_key,
-                                   aws_secret_access_key=secret_key,
-                                   region_name='us-east-1', verify=False)
+                                   aws_secret_access_key=secret_key, verify=False)
         self.bucket = bucket_name
         self.sticker_file = sticker_file
         # try to create the bucket_name
