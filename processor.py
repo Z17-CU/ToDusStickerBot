@@ -7,8 +7,9 @@ from storage import Storage
 
 class Processor:
 
-    def __init__(self, s3_client):
+    def __init__(self, s3_client, pg_client):
         self.s3_client = s3_client
+        self.pg_client = pg_client
 
     def filter(self, update, context):
         if not hasattr(update.message, 'sticker'):
@@ -36,6 +37,6 @@ class Processor:
         self.s3_client.upload_file(sticker_dict['name']+'.zip', sticker_dict['name']+"/pack.zip")
         shutil.rmtree(sticker_dict['name'], True)
         os.remove(sticker_dict['name']+'.zip')
-        # TODO: guardar la info que esta en sticker_dict para usarla en el api
+        self.pg_client.insert_sticker_pack(sticker_dict['name'], sticker_dict['title'], sticker_dict['thumb'])
 
         update.message.reply_text("Añadido " + update.message.sticker.set_name)

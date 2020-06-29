@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from downloader import Downloader
 from processor import Processor
 from s3_client import S3Client
+from pg_client import PgClient
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -21,11 +22,19 @@ def main():
                          os.environ.get('s3_secret_key'),
                          os.environ.get('s3_bucket'),
                          )
-    processor = Processor(s3_client)
+
+    pg_client = PgClient(
+        host=os.environ.get('pg_host'),
+        port=os.environ.get('pg_port'),
+        user=os.environ.get('pg_user'),
+        passwd=os.environ.get('pg_pass'),
+        db=os.environ.get('pg_db')
+    )
+    processor = Processor(s3_client, pg_client)
 
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
-    updater = Updater(os.environ.get('bot_key'), use_context=True)
+    updater = Updater(os.environ.get('bot_key'), use_context=True, )
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
