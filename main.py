@@ -9,11 +9,11 @@ from processor import Processor
 from s3_client import S3Client
 from pg_client import PgClient
 
-logging.basicConfig(level=logging.DEBUG,
+load_dotenv()
+
+logging.basicConfig(level=os.environ.get('log_level'),
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-load_dotenv()
 
 
 def main():
