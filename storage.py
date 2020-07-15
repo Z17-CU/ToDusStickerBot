@@ -12,8 +12,7 @@ class Storage:
             # Iterate over all the files in directory
             for folderName, _, files_names in os.walk(dir_name):
                 for filename in files_names:
-                    if 'tgs' in filename:
-                        # create complete file_path of file in directory
-                        file_path = os.path.join(folderName, filename)
-                        # Add file to zip
-                        zipObj.write(file_path)
+                    # create complete file_path of file in directory
+                    file_path = os.path.join(folderName, filename)
+                    # Add file to zip
+                    zipObj.write(file_path)
