@@ -30,7 +30,8 @@ def main():
         passwd=os.environ.get('pg_pass'),
         db=os.environ.get('pg_db')
     )
-    processor = Processor(s3_client, pg_client)
+    admin_users = os.environ.get('admin_users').split(',')
+    processor = Processor(s3_client, pg_client, admin_users)
 
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
