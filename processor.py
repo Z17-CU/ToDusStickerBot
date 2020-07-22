@@ -7,13 +7,19 @@ from storage import Storage
 
 class Processor:
 
-    def __init__(self, s3_client, pg_client, admin_users):
+    def __init__(self, s3_client, pg_client, admin_users, users):
         self.s3_client = s3_client
         self.pg_client = pg_client
         self.admin_users = admin_users
+        self.users = users
 
     def filter(self, update, context):
         if not hasattr(update.message, 'sticker'):
+            return
+
+        if not update.effective_chat.username in self.users and not update.effective_chat.username in self.admin_users:
+            update.message.reply_text(
+                "Aun no tiene permisos para añadir paquetes de stickers! ")
             return
 
         if self.s3_client.sticker_exists(update.message.sticker.set_name) \
