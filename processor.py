@@ -50,5 +50,8 @@ class Processor:
             update.message.reply_text("Marcado como recomendado " + update.message.sticker.set_name)
 
     def clear_recommended(self, update, context):
-        self.pg_client.clear_recommended_pack()
-        update.message.reply_text("Clear recommended ok!!")
+        if update.effective_chat.username in self.admin_users:
+            self.pg_client.clear_recommended_pack()
+            update.message.reply_text("Clear recommended ok!!")
+        else:
+            update.message.reply_text("No eres admin.")
