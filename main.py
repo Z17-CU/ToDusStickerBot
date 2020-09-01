@@ -1,5 +1,5 @@
 from telegram.ext import Updater
-from telegram.ext import MessageHandler, Filters
+from telegram.ext import MessageHandler, Filters, CommandHandler
 import logging
 import os
 from dotenv import load_dotenv
@@ -32,7 +32,7 @@ def main():
     )
     admin_users = os.environ.get('admin_users').split(',')
     users = os.environ.get('users').split(',')
-    processor = Processor(s3_client, pg_client, admin_users,users)
+    processor = Processor(s3_client, pg_client, admin_users, users)
 
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
@@ -43,6 +43,8 @@ def main():
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.sticker, processor.filter))
+
+    dp.add_handler(CommandHandler("clear_recommended", processor.clear_recommended))
 
     # Start the Bot
     updater.start_polling()
